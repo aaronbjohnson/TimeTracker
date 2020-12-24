@@ -6,6 +6,13 @@ public class Main {
     private final static String MAIN_SEE_TOTAL = "3";
     private final static String MAIN_QUIT = "4";
 
+    // project level global constants
+    private final static String START_TIMER_CHOICE = "1";
+    private final static String EDIT_PROJECT_CHOICE = "2";
+    private final static String DELETE_PROJECT_CHOICE = "3";
+    private final static String CHOOSE_ANOTHER_PROJECT = "4";
+    private final static String MAIN_MENU_RETURN_CHOICE = "5";
+
     public static void main(String[] args) {
 
 
@@ -30,17 +37,51 @@ public class Main {
                     System.out.println("you selected to create an entry..");
                     break;
                 case MAIN_ENTER_WORKSPACE:
-                    displayProjects(newSheet);
+
+
 
                     // Create a boolean to control a loop for staying inside a project until user exits
-                    boolean projectOpen = true;
-
+                    boolean projectSelectionOpen = true;
                     do {
+
+                        displayProjects(newSheet);
                         // retrieve the project that the user wants
                         Project userProject = getProjectChoice(input, newSheet);
-                        //todo: create a displayProjectMenu to add here
-                        //todo: make functionality to stop/start timer
-                    } while (projectOpen);
+
+                        // create another boolean to control staying within a chosen project
+                        boolean projectOpen = true;
+
+                        do {
+
+                            String projectActionChoice = getProjectActionChoice(input, userProject);
+
+                            switch (projectActionChoice) {
+                                case START_TIMER_CHOICE:
+                                    System.out.println("you chose to start a timer...");
+                                    //todo: make functionality to stop/start timer
+                                    break;
+                                case EDIT_PROJECT_CHOICE:
+                                    System.out.println("you chose to edit a project..");
+                                    break;
+                                case DELETE_PROJECT_CHOICE:
+                                    System.out.println("you chose to delete a projet...");
+                                    break;
+                                case CHOOSE_ANOTHER_PROJECT:
+                                    System.out.println("you chose choose another project...");
+                                    // set to false so we go back a level to choose another project
+                                    projectOpen = false;
+                                    break;
+                                case MAIN_MENU_RETURN_CHOICE:
+                                    System.out.println("you chose to return to the main menu...");
+                                    // set this to false so we skip selecting another project and instead go straight to main menu
+                                    projectOpen = false;
+                                    projectSelectionOpen = false;
+                                    break;
+                            }
+                        } while (projectOpen);
+                    } while (projectSelectionOpen);
+
+
 
                     System.out.println();
                     break;
@@ -56,6 +97,30 @@ public class Main {
 
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
+    }
+
+    public static String getProjectActionChoice(Scanner console, Project project) {
+        String answer;
+        do {
+            displayProjectInfo(project);
+            answer = console.next();
+        } while (!answer.equals(START_TIMER_CHOICE) &&
+                !answer.equals(EDIT_PROJECT_CHOICE) &&
+                !answer.equals(DELETE_PROJECT_CHOICE) &&
+                !answer.equals(CHOOSE_ANOTHER_PROJECT) &&
+                !answer.equals(MAIN_MENU_RETURN_CHOICE));
+
+        return answer;
+    }
+
+    public static void displayProjectInfo(Project project) {
+        System.out.println("Project: " + project.getName());
+        System.out.println("Hours: " + project.getTotalTime() + "\n");
+        System.out.println("1) Start a timer");
+        System.out.println("2) Edit project");
+        System.out.println("3) Delete project");
+        System.out.println("4) Choose another project");
+        System.out.println("5) Return to main menu");
     }
 
     public static Project getProjectChoice(Scanner console, TimeSheet sheet) {
