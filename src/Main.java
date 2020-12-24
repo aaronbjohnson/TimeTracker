@@ -30,8 +30,19 @@ public class Main {
                     System.out.println("you selected to create an entry..");
                     break;
                 case MAIN_ENTER_WORKSPACE:
-                    System.out.println(newSheet.toString());
-                    System.out.println("you selected to enter a workspace");
+                    displayProjects(newSheet);
+
+                    // Create a boolean to control a loop for staying inside a project until user exits
+                    boolean projectOpen = true;
+
+                    do {
+                        // retrieve the project that the user wants
+                        Project userProject = getProjectChoice(input, newSheet);
+                        //todo: create a displayProjectMenu to add here
+                        //todo: make functionality to stop/start timer
+                    } while (projectOpen);
+
+                    System.out.println();
                     break;
                 case MAIN_SEE_TOTAL:
                     System.out.println("see the total of all proejcts you wanted...");
@@ -45,6 +56,26 @@ public class Main {
 
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
+    }
+
+    public static Project getProjectChoice(Scanner console, TimeSheet sheet) {
+        int answer = 0;
+        do {
+            //displayProjects(sheet);  don't think we need this here as we might want to display menu again?
+            // have to convert the answer to an int to compare
+            answer = Integer.parseInt(console.next());
+        } while (!sheet.getProjectMap().containsKey(answer));
+
+        return sheet.getProjectMap().get(answer);
+    }
+
+    public static void displayProjects(TimeSheet sheet) {
+        System.out.println();
+        System.out.println("Which project would you like to enter:");
+        sheet.getProjectMap().forEach((k, v) -> {
+            System.out.format("%d) %s", k, v.getName());
+            System.out.println();
+        });
     }
 
     public static Project createProject(Scanner console) {

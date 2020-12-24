@@ -55,11 +55,15 @@ public class TimeSheet {
         this.projects = projects;
     }
 
+    public Map<Integer, Project> getProjectMap() {
+        return projectMap;
+    }
+
     @Override
     public String toString() {
         return "TimeSheet{" +
                 "grandTotal=" + grandTotal +
-                ", projects=" + projects +
+                ", projectMap=" + projectMap +
                 '}';
     }
 }
