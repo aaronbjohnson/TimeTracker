@@ -1,3 +1,5 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Scanner;
 
 public class Main {
@@ -12,6 +14,12 @@ public class Main {
     private final static String DELETE_PROJECT_CHOICE = "3";
     private final static String CHOOSE_ANOTHER_PROJECT = "4";
     private final static String MAIN_MENU_RETURN_CHOICE = "5";
+
+    // global constant for ending a timer
+    private final static String END_TIMER = "end";
+
+    // global constant for number of minutes in an hour
+    private final static double MINUTES_IN_HOUR = 60.0;
 
     public static void main(String[] args) {
 
@@ -59,6 +67,16 @@ public class Main {
                                 case START_TIMER_CHOICE:
                                     System.out.println("you chose to start a timer...");
                                     //todo: make functionality to stop/start timer
+                                    long start = System.currentTimeMillis();
+                                    // Display info to the user that the timer has started
+                                    System.out.println("The timer is running...");
+                                    System.out.println("Type 'end' to STOP the timer.");
+                                    long end = getStopTime(input);
+                                    System.out.println("Timer stopped.");
+                                    double interval = getInterval(start, end);
+                                    System.out.println("The interval was " + interval + " hours.");
+                                    System.out.println("Do you want to add this time to the project?");
+                                    // todo: next make a switch statement to process user's choice to add time to project...
                                     break;
                                 case EDIT_PROJECT_CHOICE:
                                     System.out.println("you chose to edit a project..");
@@ -98,6 +116,40 @@ public class Main {
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
     }
+
+    public static double getInterval(long start, long end) {
+        // todo: create global constants for all the literals below
+        long diffInMilliseconds = end - start;
+        long diffInSeconds = diffInMilliseconds / 1000;
+        int seconds = (int) (diffInSeconds % 60);
+        diffInSeconds /= 60;
+        int minutes = (int) (diffInSeconds % 60);
+        diffInSeconds /= 60;
+        int hours = (int) (diffInSeconds % 24);
+
+        // Convert minutes to decimal by dividing by 60
+        double rawTime = hours + (minutes / MINUTES_IN_HOUR);
+
+        // Make a BigDecimal version of the raw time
+        BigDecimal finalTime = new BigDecimal(rawTime);
+
+        // Round to the nearest 10th
+        finalTime = finalTime.setScale(1, RoundingMode.UP);
+
+        return finalTime.doubleValue();
+    }
+
+
+    public static long getStopTime(Scanner console) {
+        String answer;
+        do {
+            answer = console.next();
+        } while (!answer.equals(END_TIMER));
+
+        return System.currentTimeMillis();
+    }
+
+
 
     public static String getProjectActionChoice(Scanner console, Project project) {
         String answer;
