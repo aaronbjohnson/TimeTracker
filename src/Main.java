@@ -6,15 +6,15 @@ import java.util.Scanner;
 public class Main {
     private final static String MAIN_CREATE_ENTRY = "1";
     private final static String MAIN_ENTER_WORKSPACE = "2";
-    private final static String MAIN_SEE_TOTAL = "3";
-    private final static String MAIN_QUIT = "4";
+    private final static String DELETE_PROJECT = "3";
+    private final static String MAIN_SEE_TOTAL = "4";
+    private final static String MAIN_QUIT = "5";
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
     private final static String EDIT_PROJECT_CHOICE = "2";
-    private final static String DELETE_PROJECT_CHOICE = "3";
-    private final static String CHOOSE_ANOTHER_PROJECT = "4";
-    private final static String MAIN_MENU_RETURN_CHOICE = "5";
+    private final static String CHOOSE_ANOTHER_PROJECT = "3";
+    private final static String MAIN_MENU_RETURN_CHOICE = "4";
 
     // global constant for ending a timer
     private final static String END_TIMER = "end";
@@ -56,13 +56,11 @@ public class Main {
                     System.out.println("you selected to create an entry..");
                     break;
                 case MAIN_ENTER_WORKSPACE:
-
-
-
                     // Create a boolean to control a loop for staying inside a project until user exits
                     boolean projectSelectionOpen = true;
                     do {
 
+                        System.out.println("\nWhich project would you like to enter?");
                         displayProjects(newSheet);
                         // retrieve the project that the user wants
                         Project userProject = getProjectChoice(input, newSheet);
@@ -133,11 +131,7 @@ public class Main {
 
                                     } while (editingProject);
                                     break;
-                                case DELETE_PROJECT_CHOICE:
-                                    System.out.println("you chose to delete a projet...");
-                                    break;
                                 case CHOOSE_ANOTHER_PROJECT:
-                                    System.out.println("you chose choose another project...");
                                     // set to false so we go back a level to choose another project
                                     projectOpen = false;
                                     break;
@@ -154,6 +148,13 @@ public class Main {
 
 
                     System.out.println();
+                    break;
+                case DELETE_PROJECT:
+                    System.out.println("What project would you like to delete?");
+                    // display the project like in project selection to enter:
+                    displayProjects(newSheet);
+                    int projectKey = getProjectKey(input);
+                    newSheet.deleteProject(projectKey);
                     break;
                 case MAIN_SEE_TOTAL:
                     System.out.println("see the total of all proejcts you wanted...");
@@ -262,7 +263,6 @@ public class Main {
             answer = console.next();
         } while (!answer.equals(START_TIMER_CHOICE) &&
                 !answer.equals(EDIT_PROJECT_CHOICE) &&
-                !answer.equals(DELETE_PROJECT_CHOICE) &&
                 !answer.equals(CHOOSE_ANOTHER_PROJECT) &&
                 !answer.equals(MAIN_MENU_RETURN_CHOICE));
 
@@ -274,9 +274,17 @@ public class Main {
         System.out.println("Hours: " + project.getTotalTime() + "\n");
         System.out.println("1) Start a timer");
         System.out.println("2) Edit project");
-        System.out.println("3) Delete project");
-        System.out.println("4) Choose another project");
-        System.out.println("5) Return to main menu");
+        System.out.println("3) Choose another project");
+        System.out.println("4) Return to main menu");
+    }
+
+    public static int getProjectKey(Scanner console) {
+
+        while(!console.hasNextInt()) {
+            console.next();
+        }
+
+        return console.nextInt();
     }
 
     public static Project getProjectChoice(Scanner console, TimeSheet sheet) {
@@ -292,7 +300,6 @@ public class Main {
 
     public static void displayProjects(TimeSheet sheet) {
         System.out.println();
-        System.out.println("Which project would you like to enter:");
         sheet.getProjectMap().forEach((k, v) -> {
             System.out.format("%d) %s", k, v.getName());
             System.out.println();
@@ -314,6 +321,8 @@ public class Main {
             answer = console.next();
         } while (!answer.equals(MAIN_CREATE_ENTRY) &&
                 !answer.equals(MAIN_ENTER_WORKSPACE) &&
+                !answer.equals(DELETE_PROJECT) &&
+                !answer.equals(MAIN_SEE_TOTAL) &&
                 !answer.equals(MAIN_QUIT));
 
         return answer;
@@ -324,9 +333,11 @@ public class Main {
         System.out.println("Number of projects so far: " + numProjects);
 
         System.out.println("What would you like to do?");
+        System.out.println();
         System.out.println("1) Create new entry");
         System.out.println("2) Enter project workspace");
-        System.out.println("3) See total worked time");
-        System.out.println("4) Quit");
+        System.out.println("3) Delete project");
+        System.out.println("4) See total worked time");
+        System.out.println("5) Quit");
     }
 }

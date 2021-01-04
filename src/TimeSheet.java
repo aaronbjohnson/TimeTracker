@@ -22,6 +22,10 @@ public class TimeSheet {
         projectMap.put(id, project);
     }
 
+    public void deleteProject(int key) {
+        projectMap.remove(key);
+    }
+
    /* public void addProject(Project newProject) {
         projects.add(newProject);
     }*/
