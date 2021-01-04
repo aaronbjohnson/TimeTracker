@@ -17,10 +17,9 @@ public class TimeSheet {
         this.projects  = new ArrayList<Project>();
     }
 
-    public Project addProject(Project project) {
+    public void addProject(Project project) {
         id++;
         projectMap.put(id, project);
-        return project;
     }
 
    /* public void addProject(Project newProject) {

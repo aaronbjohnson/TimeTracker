@@ -121,7 +121,13 @@ public class Main {
                                                 updateTime(input, userProject);
                                                 break;
                                             case RETURN_TO_PROJECT_MENU:
+                                                editingProject = false;
+                                                break;
                                             case RETURN_TO_MAIN_MENU:
+                                                editingProject = false;
+                                                projectOpen = false;
+                                                projectSelectionOpen = false;
+                                                break;
                                         }
 
 
@@ -169,7 +175,7 @@ public class Main {
         while(!console.hasNextDouble()) {
             console.next();
         }
-        
+
         double newTime = console.nextDouble();
         project.setTotalTime(newTime);
 
