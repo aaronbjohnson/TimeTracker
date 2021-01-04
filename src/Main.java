@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.SecureCacheResponse;
 import java.util.Scanner;
 
 public class Main {
@@ -20,6 +21,16 @@ public class Main {
 
     // global constant for number of minutes in an hour
     private final static double MINUTES_IN_HOUR = 60.0;
+
+    // global constant for yes options
+    private final static String YES_OPTION = "y";
+    private final static String NO_OPTION = "n";
+
+    // gc for editing a project
+    private final static String CHANGE_NAME = "1";
+    private final static String CHANGE_TIME = "2";
+    private final static String RETURN_TO_PROJECT_MENU= "3";
+    private final static String RETURN_TO_MAIN_MENU="4";
 
     public static void main(String[] args) {
 
@@ -75,11 +86,46 @@ public class Main {
                                     System.out.println("Timer stopped.");
                                     double interval = getInterval(start, end);
                                     System.out.println("The interval was " + interval + " hours.");
-                                    System.out.println("Do you want to add this time to the project?");
-                                    // todo: next make a switch statement to process user's choice to add time to project...
+
+
+                                    // First we'll make a boolean to control whether the user saves time interval to project
+                                    boolean commitTime = true;
+
+                                    do {
+                                        System.out.println("Do you want to add this time to the project? (y/n)");
+                                        String commitTimeChoice = input.next();
+
+                                        if (commitTimeChoice.toLowerCase().equals(YES_OPTION)) {
+                                            // commit the time to the project
+                                            updateProjectTime(userProject, interval);
+
+                                            // get out of the loop
+                                            commitTime = false;
+
+                                        } else if (commitTimeChoice.toLowerCase().equals(NO_OPTION)) {
+                                            commitTime = false;
+                                        }
+                                    } while (commitTime);
                                     break;
                                 case EDIT_PROJECT_CHOICE:
                                     System.out.println("you chose to edit a project..");
+                                    boolean editingProject = true;
+                                    do {
+                                        String userEditChoice = getEditMenuChoice(input, userProject);
+
+                                        switch (userEditChoice) {
+                                            case CHANGE_NAME:
+                                                updateName(input, userProject);
+                                                break;
+                                            case CHANGE_TIME:
+                                                updateTime(input, userProject);
+                                                break;
+                                            case RETURN_TO_PROJECT_MENU:
+                                            case RETURN_TO_MAIN_MENU:
+                                        }
+
+
+                                    } while (editingProject);
                                     break;
                                 case DELETE_PROJECT_CHOICE:
                                     System.out.println("you chose to delete a projet...");
@@ -116,6 +162,58 @@ public class Main {
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
     }
+
+    public static void updateTime(Scanner console, Project project) {
+        System.out.println("Enter the new total time: ");
+
+        while(!console.hasNextDouble()) {
+            console.next();
+        }
+        
+        double newTime = console.nextDouble();
+        project.setTotalTime(newTime);
+
+        System.out.println("The project's time has been changed.");
+    }
+
+    public static void updateName(Scanner console, Project project) {
+        System.out.println("Enter new name: ");
+        String newName = console.next();
+
+        // Update the name
+        project.setName(newName);
+        System.out.println("The project's name has been changed.");
+    }
+
+    public static String getEditMenuChoice(Scanner console, Project project) {
+        String answer;
+        do {
+            displayEditMenu(project);
+            answer = console.next();
+        } while (!answer.equals(CHANGE_NAME) &&
+                !answer.equals(CHANGE_TIME) &&
+                !answer.equals(RETURN_TO_PROJECT_MENU) &&
+                !answer.equals(RETURN_TO_MAIN_MENU));
+
+        return answer;
+    }
+
+    public static void displayEditMenu(Project project) {
+        System.out.println("Project: " + project.getName());
+        System.out.println("Hours: " + project.getTotalTime() + "\n");
+        System.out.println("1) Rename");
+        System.out.println("2) Change time");
+        System.out.println("3) Return to project menu");
+        System.out.println("4) Return to main menu");
+    }
+
+    public static void updateProjectTime(Project project, double time) {
+        // Get the project's current time and add new time
+        double updatedTime = project.getTotalTime() + time;
+        // Update the project's time
+        project.setTotalTime(updatedTime);
+    }
+
 
     public static double getInterval(long start, long end) {
         // todo: create global constants for all the literals below
