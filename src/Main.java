@@ -7,8 +7,7 @@ public class Main {
     private final static String MAIN_CREATE_ENTRY = "1";
     private final static String MAIN_ENTER_WORKSPACE = "2";
     private final static String DELETE_PROJECT = "3";
-    private final static String MAIN_SEE_TOTAL = "4";
-    private final static String MAIN_QUIT = "5";
+    private final static String MAIN_QUIT = "4";
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
@@ -155,9 +154,6 @@ public class Main {
                     displayProjects(newSheet);
                     int projectKey = getProjectKey(input);
                     newSheet.deleteProject(projectKey);
-                    break;
-                case MAIN_SEE_TOTAL:
-                    System.out.println("see the total of all proejcts you wanted...");
                     break;
                 case MAIN_QUIT:
                     System.out.println("Bye");
@@ -316,28 +312,29 @@ public class Main {
     public static String getMainChoice(Scanner console, TimeSheet sheet) {
         String answer;
         int numProjects = sheet.getNumberProjects();
+        double totalHours = sheet.getGrandTotal();
         do {
-            displayWelcome(numProjects);
+            displayWelcome(numProjects, totalHours);
             answer = console.next();
         } while (!answer.equals(MAIN_CREATE_ENTRY) &&
                 !answer.equals(MAIN_ENTER_WORKSPACE) &&
                 !answer.equals(DELETE_PROJECT) &&
-                !answer.equals(MAIN_SEE_TOTAL) &&
                 !answer.equals(MAIN_QUIT));
 
         return answer;
     }
 
-    public static void displayWelcome(int numProjects) {
+    public static void displayWelcome(int numProjects, double numHours) {
+        System.out.println();
         System.out.println("Welcome.");
         System.out.println("Number of projects so far: " + numProjects);
+        System.out.println("Number of hours logged so far: " + numHours);
 
         System.out.println("What would you like to do?");
         System.out.println();
         System.out.println("1) Create new entry");
         System.out.println("2) Enter project workspace");
         System.out.println("3) Delete project");
-        System.out.println("4) See total worked time");
-        System.out.println("5) Quit");
+        System.out.println("4) Quit");
     }
 }
