@@ -1,13 +1,18 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.SecureCacheResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     private final static String MAIN_CREATE_ENTRY = "1";
     private final static String MAIN_ENTER_WORKSPACE = "2";
     private final static String DELETE_PROJECT = "3";
-    private final static String MAIN_QUIT = "4";
+    private final static String MERGE_PROJECTS = "4";
+    private final static String MAIN_QUIT = "5";
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
@@ -31,7 +36,7 @@ public class Main {
     private final static String RETURN_TO_PROJECT_MENU= "3";
     private final static String RETURN_TO_MAIN_MENU="4";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
 
 
@@ -155,6 +160,39 @@ public class Main {
                     int projectKey = getProjectKey(input);
                     newSheet.deleteProject(projectKey);
                     break;
+                case MERGE_PROJECTS:
+                    System.out.println("Which projects would you like to merge?");
+                    System.out.println("\nEnter the projects separated by space (1 3 5) and press Enter.");
+                    displayProjects(newSheet);
+
+                   /* // testing getInputString
+                    ArrayList<String> inputStrings = getInputString(input);
+                    System.out.println("\nthe input string:");
+                    System.out.println(inputStrings);*/
+
+                    int[] projectsToMerge = inputGetter();
+
+                    System.out.println("now calling the get name function...");
+                    String newProjectName = getNewName();
+
+                    mergeProjects(projectsToMerge, newProjectName, newSheet);
+
+
+
+                    //ArrayList<Integer> projectsSelection = getProjectSelections(input);
+
+                   /* System.out.println("\nthis thing...here's the entry:");
+                    System.out.println(projectsSelection);*/
+
+          /*          int[] toMerge = getProjectsToMerge(input);
+                    for (int k : toMerge
+                         ) {
+                        System.out.println(k);
+                    }
+
+                    String newProjectName = getNewName(input);
+                    mergeProjects(toMerge, newProjectName, newSheet);*/
+                    break;
                 case MAIN_QUIT:
                     System.out.println("Bye");
                     programRunning = false;
@@ -164,6 +202,105 @@ public class Main {
 
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
+    }
+
+
+    public static int[] inputGetter() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] arr = reader.readLine().split(" ");
+        int[] intarr = new int[arr.length];
+
+        for (int i = 0; i < arr.length; i++) {
+            intarr[i] = Integer.parseInt(arr[i]);
+        }
+        reader.close();
+
+        return intarr;
+
+    }
+
+    /*public static ArrayList<Integer> getProjectSelections(Scanner console) {
+        *//*System.out.println("getProjectsSelections is being run...");
+        console.useDelimiter(" ");
+        String projects = "";
+        projects = console.nextLine();// todo: 1/5/2021. figure this out...
+
+        System.out.println("returning: " + projects);*//*
+        ArrayList<Integer> projects = new ArrayList<>();
+
+
+        Integer enteredProjects = console.nextInt();
+
+
+
+        *//*while (enteredProjects!=null) {
+            projects.add(console.nextInt());
+
+            if (enteredProjects.isEmpty()) {
+                return projects;
+            }
+        }*//*
+
+        return projects;
+    }*/
+
+
+//todo: 1/5/2020 @ 12:57. Next thing to do is maybe implement what is in the coderanch forum: Make a separate Inputs utility class.
+    public static String getNewName() {
+        System.out.println("\nEntering getName function...");
+        String name = "";
+
+        try (
+                Scanner input = new Scanner(System.in)
+        ) {
+            while (input.hasNext()) {
+                name = input.next();
+            }
+        }
+
+        return name;
+    }
+
+    public static void mergeProjects(int[] projects, String name, TimeSheet sheet) {
+        double totalTime = 0;
+
+        for (int key : projects) {
+            // Access each project's time in the timesheet and add to total time above.
+            totalTime += sheet.getProjectMap().get(key).getTotalTime();
+        }
+
+        // Create a new project with the new name and hours
+        new Project(name, totalTime);
+    }
+
+    public static int[] getProjectsToMerge(Scanner console) {
+        System.out.println("\nEnter the projects separated by space (1 3 5) and press Enter.");
+
+        String enteredKeys = console.nextLine();
+
+        System.out.println("\nthe entered keys are: ");
+        System.out.println(enteredKeys);
+
+        String[] tokens = enteredKeys.split(" ");
+
+        System.out.println("\nafter splitting, the array looks like: ");
+
+        //char[] separatedKeys = enteredKeys.toCharArray();
+        System.out.println(Arrays.toString(tokens));
+
+        return convertStringsToInts(tokens);
+    }
+
+    // todo: may can delete now that using BufferReader
+    public static int[] convertStringsToInts(String[] separatedKeys) {
+
+        int[] keys = new int[separatedKeys.length - 1];
+
+        for (int i = 0; i < separatedKeys.length - 1; i++) {
+            keys[i] = Integer.parseInt(separatedKeys[i]);
+        }
+        return keys;
     }
 
     public static void updateTime(Scanner console, Project project) {
@@ -319,6 +456,7 @@ public class Main {
         } while (!answer.equals(MAIN_CREATE_ENTRY) &&
                 !answer.equals(MAIN_ENTER_WORKSPACE) &&
                 !answer.equals(DELETE_PROJECT) &&
+                !answer.equals(MERGE_PROJECTS) &&
                 !answer.equals(MAIN_QUIT));
 
         return answer;
@@ -329,12 +467,14 @@ public class Main {
         System.out.println("Welcome.");
         System.out.println("Number of projects so far: " + numProjects);
         System.out.println("Number of hours logged so far: " + numHours);
+        System.out.println();
 
         System.out.println("What would you like to do?");
         System.out.println();
         System.out.println("1) Create new entry");
         System.out.println("2) Enter project workspace");
         System.out.println("3) Delete project");
-        System.out.println("4) Quit");
+        System.out.println("4) Merge projects");
+        System.out.println("5) Quit");
     }
 }
