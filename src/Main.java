@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -12,7 +13,8 @@ public class Main {
     private final static String MAIN_ENTER_WORKSPACE = "2";
     private final static String DELETE_PROJECT = "3";
     private final static String MERGE_PROJECTS = "4";
-    private final static String MAIN_QUIT = "5";
+    private final static String VIEW_TIMESHEET = "5";
+    private final static String MAIN_QUIT = "6";
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
@@ -205,6 +207,12 @@ public class Main {
 
                     String newProjectName = getNewName(input);
                     mergeProjects(toMerge, newProjectName, newSheet);*/
+                    break;
+                case VIEW_TIMESHEET:
+                    displayTimeSheet(newSheet);
+
+                    System.out.println("\nWould you like to save this to a file?");
+                    //todo: make method that save contents of timesheet to a file in same directory as program.
                     break;
                 case MAIN_QUIT:
                     System.out.println("Bye");
@@ -480,6 +488,7 @@ public class Main {
                 !answer.equals(MAIN_ENTER_WORKSPACE) &&
                 !answer.equals(DELETE_PROJECT) &&
                 !answer.equals(MERGE_PROJECTS) &&
+                !answer.equals(VIEW_TIMESHEET) &&
                 !answer.equals(MAIN_QUIT));
 
         return answer;
@@ -491,6 +500,17 @@ public class Main {
         System.out.println("Number of projects so far: " + sheet.getNumberProjects());
         System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
         System.out.println();
+    }
+
+    public static void displayTimeSheet(TimeSheet sheet) {
+        System.out.println("Project\t\t\t\t| Total Hours");
+        System.out.println("--------------------------");
+
+        for (Map.Entry<Integer, Project> entry : sheet.getProjectMap().entrySet()) {
+            String name = entry.getValue().getName();
+            double time = entry.getValue().getTotalTime();
+            System.out.println(name + "\t\t\t\t| " + time);
+        }
     }
 
     public static void displayWelcome(TimeSheet sheet) {
@@ -507,6 +527,7 @@ public class Main {
         System.out.println("2) Enter project workspace");
         System.out.println("3) Delete project");
         System.out.println("4) Merge projects");
-        System.out.println("5) Quit");
+        System.out.println("5) View time sheet");
+        System.out.println("6) Quit");
     }
 }
