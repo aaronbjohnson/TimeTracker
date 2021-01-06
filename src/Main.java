@@ -16,9 +16,11 @@ public class Main {
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
-    private final static String EDIT_PROJECT_CHOICE = "2";
-    private final static String CHOOSE_ANOTHER_PROJECT = "3";
-    private final static String MAIN_MENU_RETURN_CHOICE = "4";
+    //private final static String EDIT_PROJECT_CHOICE = "2";
+    private final static String CHANGE_NAME = "2";
+    private final static String CHANGE_TIME = "3";
+    private final static String CHOOSE_ANOTHER_PROJECT = "4";
+    private final static String MAIN_MENU_RETURN_CHOICE = "5";
 
     // global constant for ending a timer
     private final static String END_TIMER = "end";
@@ -31,10 +33,10 @@ public class Main {
     private final static String NO_OPTION = "n";
 
     // gc for editing a project
-    private final static String CHANGE_NAME = "1";
-    private final static String CHANGE_TIME = "2";
-    private final static String RETURN_TO_PROJECT_MENU= "3";
-    private final static String RETURN_TO_MAIN_MENU="4";
+    //private final static String CHANGE_NAME = "1";
+    //private final static String CHANGE_TIME = "2";
+    //private final static String RETURN_TO_PROJECT_MENU= "3";
+    //private final static String RETURN_TO_MAIN_MENU="4";
 
     public static void main(String[] args) throws IOException {
 
@@ -66,6 +68,7 @@ public class Main {
                     do {
 
                         System.out.println("\nWhich project would you like to enter?");
+                        displayProjects(newSheet);
                         // retrieve the project that the user wants
                         Project userProject = getProjectChoice(newSheet);
 
@@ -109,7 +112,13 @@ public class Main {
                                         }
                                     } while (commitTime);
                                     break;
-                                case EDIT_PROJECT_CHOICE:
+                                case CHANGE_NAME:
+                                    updateName(userProject);
+                                    break;
+                                case CHANGE_TIME:
+                                    updateTime(userProject);
+                                    break;
+                               /* case EDIT_PROJECT_CHOICE:
                                     System.out.println("you chose to edit a project..");
                                     boolean editingProject = true;
                                     do {
@@ -134,7 +143,7 @@ public class Main {
 
 
                                     } while (editingProject);
-                                    break;
+                                    break;*/
                                 case CHOOSE_ANOTHER_PROJECT:
                                     // set to false so we go back a level to choose another project
                                     projectOpen = false;
@@ -338,7 +347,7 @@ public class Main {
         System.out.println("The project's name has been changed.");
     }
 
-    public static String getEditMenuChoice( Project project) {
+/*    public static String getEditMenuChoice( Project project) {
         String answer;
         do {
             displayEditMenu(project);
@@ -349,7 +358,7 @@ public class Main {
                 !answer.equals(RETURN_TO_MAIN_MENU));
 
         return answer;
-    }
+    }*/
 
     public static void displayEditMenu(Project project) {
         System.out.println("Project: " + project.getName());
@@ -408,7 +417,8 @@ public class Main {
             displayProjectInfo(project);
             answer = InputUtility.getString();
         } while (!answer.equals(START_TIMER_CHOICE) &&
-                !answer.equals(EDIT_PROJECT_CHOICE) &&
+                !answer.equals(CHANGE_NAME) &&
+                !answer.equals(CHANGE_TIME) &&
                 !answer.equals(CHOOSE_ANOTHER_PROJECT) &&
                 !answer.equals(MAIN_MENU_RETURN_CHOICE));
 
@@ -419,9 +429,10 @@ public class Main {
         System.out.println("Project: " + project.getName());
         System.out.println("Hours: " + project.getTotalTime() + "\n");
         System.out.println("1) Start a timer");
-        System.out.println("2) Edit project");
-        System.out.println("3) Choose another project");
-        System.out.println("4) Return to main menu");
+        System.out.println("2) Rename project");
+        System.out.println("3) Change time");
+        System.out.println("4) Choose another project");
+        System.out.println("5) Return to main menu");
     }
 
     public static int getProjectKey( ) {
