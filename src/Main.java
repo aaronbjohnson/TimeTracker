@@ -50,6 +50,7 @@ public class Main {
         boolean programRunning = true;
 
         do {
+
             String mainMenuChoice = getMainChoice(newSheet);
 
             switch (mainMenuChoice) {
@@ -65,7 +66,6 @@ public class Main {
                     do {
 
                         System.out.println("\nWhich project would you like to enter?");
-                        displayProjects(newSheet);
                         // retrieve the project that the user wants
                         Project userProject = getProjectChoice(newSheet);
 
@@ -140,7 +140,6 @@ public class Main {
                                     projectOpen = false;
                                     break;
                                 case MAIN_MENU_RETURN_CHOICE:
-                                    System.out.println("you chose to return to the main menu...");
                                     // set this to false so we skip selecting another project and instead go straight to main menu
                                     projectOpen = false;
                                     projectSelectionOpen = false;
@@ -280,6 +279,8 @@ public class Main {
         for (int key : projects) {
             // Access each project's time in the timesheet and add to total time above.
             totalTime += sheet.getProjectMap().get(key).getTotalTime();
+            // After getting the project's time, delete that project's record
+            sheet.deleteProject(key);
         }
 
         // Create a new project with the new name and hours
@@ -461,10 +462,8 @@ public class Main {
 
     public static String getMainChoice(TimeSheet sheet) {
         String answer;
-        int numProjects = sheet.getNumberProjects();
-        double totalHours = sheet.getGrandTotal();
         do {
-            displayWelcome(numProjects, totalHours);
+            displayWelcome(sheet);
             answer = InputUtility.getString();
         } while (!answer.equals(MAIN_CREATE_ENTRY) &&
                 !answer.equals(MAIN_ENTER_WORKSPACE) &&
@@ -475,12 +474,21 @@ public class Main {
         return answer;
     }
 
-    public static void displayWelcome(int numProjects, double numHours) {
+    public static void displayStatus(TimeSheet sheet) {
+        // This function will display the total number of projects and the grand total of time
+        System.out.println();
+        System.out.println("Number of projects so far: " + sheet.getNumberProjects());
+        System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
+        System.out.println();
+    }
+
+    public static void displayWelcome(TimeSheet sheet) {
         System.out.println();
         System.out.println("Welcome.");
-        System.out.println("Number of projects so far: " + numProjects);
-        System.out.println("Number of hours logged so far: " + numHours);
-        System.out.println();
+        // call displayStatus here
+        //displayStatus(sheet);
+        System.out.println("Number of projects so far: " + sheet.getNumberProjects());
+        System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
 
         System.out.println("What would you like to do?");
         System.out.println();

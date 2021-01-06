@@ -43,7 +43,12 @@ public class TimeSheet {
     }*/
 
     public double getGrandTotal() {
-        return grandTotal;
+        double total = 0.0;
+        for (Map.Entry<Integer, Project> entry : projectMap.entrySet()) {
+            total += entry.getValue().getTotalTime();
+        }
+
+        return total;
     }
 
     public void setGrandTotal(double grandTotal) {
