@@ -1,9 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,6 +30,9 @@ public class Main {
     // global constant for yes options
     private final static String YES_OPTION = "y";
     private final static String NO_OPTION = "n";
+
+    // global constant for time sheet log file name
+    private final static String OUTFILE_NAME = "timesheet_log.txt";
 
     // gc for editing a project
     //private final static String CHANGE_NAME = "1";
@@ -209,10 +209,22 @@ public class Main {
                     mergeProjects(toMerge, newProjectName, newSheet);*/
                     break;
                 case VIEW_TIMESHEET:
-                    displayTimeSheet(newSheet);
+                    //displayTimeSheet(newSheet);
+                    System.out.println(assembleTimesheet(newSheet));
 
-                    System.out.println("\nWould you like to save this to a file?");
-                    //todo: make method that save contents of timesheet to a file in same directory as program.
+                    System.out.println("\nWould you like to save this to a file? (y/n)");
+                    System.out.println("WARNING: This will overwrite any previously saved log.");
+                    //todo: make method that save contents of timesheet to a file in same directory as program. @continue
+
+
+                    String saveTimesheet = InputUtility.getNextInput();
+
+                    if (saveTimesheet.toLowerCase().equals(YES_OPTION)) {
+                        // save the timesheet output to a text file
+                        createTimesheetFile(newSheet);
+                    }
+
+
                     break;
                 case MAIN_QUIT:
                     System.out.println("Bye");
@@ -223,6 +235,12 @@ public class Main {
 
 
         //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
+    }
+
+    public static void createTimesheetFile(TimeSheet sheet) throws FileNotFoundException {
+        PrintWriter output = new PrintWriter(OUTFILE_NAME);
+        output.println(assembleTimesheet(sheet));
+        output.close();
     }
 
 
@@ -284,10 +302,9 @@ public class Main {
             System.out.println(parse);
         }*/
         //String name = InputUtility.userInput.next();
-        String name = InputUtility.input.readLine();
 
 
-        return name;
+        return InputUtility.input.readLine();
     }
 
     public static Project mergeProjects(int[] projects, String name, TimeSheet sheet) {
@@ -502,7 +519,7 @@ public class Main {
         System.out.println();
     }
 
-    public static void displayTimeSheet(TimeSheet sheet) {
+/*    public static void displayTimeSheet(TimeSheet sheet) {
         System.out.println("Project\t\t\t\t| Total Hours");
         System.out.println("--------------------------");
 
@@ -511,6 +528,19 @@ public class Main {
             double time = entry.getValue().getTotalTime();
             System.out.println(name + "\t\t\t\t| " + time);
         }
+    }*/
+
+    public static StringBuilder assembleTimesheet(TimeSheet sheet) {
+        StringBuilder content = new StringBuilder("Project\t\t\t| Total Hours\n---------------------------------------------\n");
+
+        for (Map.Entry<Integer, Project> entry : sheet.getProjectMap().entrySet()) {
+            String name = entry.getValue().getName();
+            double time = entry.getValue().getTotalTime();
+            content.append(name).append("\t\t\t| ").append(time).append("\n");
+        }
+
+        return content;
+
     }
 
     public static void displayWelcome(TimeSheet sheet) {
