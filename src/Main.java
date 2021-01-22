@@ -433,7 +433,7 @@ public class Main {
         String answer;
         do {
             answer = InputUtility.getString();
-        } while (!answer.equals(END_TIMER));
+        } while (!answer.toLowerCase().equals(END_TIMER));
 
         return System.currentTimeMillis();
     }
