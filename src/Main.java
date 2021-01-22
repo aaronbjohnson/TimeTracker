@@ -31,8 +31,12 @@ public class Main {
     private final static String YES_OPTION = "y";
     private final static String NO_OPTION = "n";
 
+
+    // Create constant for the path to the user's desktop where a saved log file is saved by default when requested
+    private final static String DESKTOP_PATH = System.getProperty("user.home") + "/Desktop/";
+
     // global constant for time sheet log file name
-    private final static String OUTFILE_NAME = "timesheet_log.txt";
+    private final static String OUTFILE_NAME = DESKTOP_PATH + "timesheet_log.txt";
 
     // gc for editing a project
     //private final static String CHANGE_NAME = "1";
