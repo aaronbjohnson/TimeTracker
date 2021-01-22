@@ -551,6 +551,9 @@ public class Main {
             content.append(name).append("\t\t\t| ").append(time).append("\n");
         }
 
+        // Add grand total to time sheet display
+        content.append("\nGrand Total\t\t| ").append(sheet.getGrandTotal()).append("\n");
+
         return content;
 
     }
