@@ -100,7 +100,7 @@ public class Main {
 
                                     do {
                                         System.out.println("Do you want to add this time to the project? (y/n)");
-                                        String commitTimeChoice = InputUtility.getNextInput();
+                                        String commitTimeChoice = InputUtility.getLine();
 
                                         if (commitTimeChoice.toLowerCase().equals(YES_OPTION)) {
                                             // commit the time to the project
@@ -258,7 +258,7 @@ public class Main {
     }
 
     /*public static ArrayList<Integer> getProjectSelections(Scanner console) {
-        *//*System.out.println("getProjectsSelections is being run...");
+     *//*System.out.println("getProjectsSelections is being run...");
         console.useDelimiter(" ");
         String projects = "";
         projects = console.nextLine();// todo: 1/5/2021. figure this out...
@@ -283,7 +283,7 @@ public class Main {
     }*/
 
 
-//todo: 1/5/2020 @ 12:57. Next thing to do is maybe implement what is in the coderanch forum: Make a separate Inputs utility class.
+    //todo: 1/5/2020 @ 12:57. Next thing to do is maybe implement what is in the coderanch forum: Make a separate Inputs utility class.
     public static String getNewName() throws IOException {
         System.out.print("\nEnter a name for the merged project: ");
         //String name = "";
@@ -463,18 +463,26 @@ public class Main {
     public static int getProjectKey( ) {
 
         while (!InputUtility.hasAnotherInt()) {
+            System.out.println("\nPlease enter a valid number option.\n");
             InputUtility.getNextInput(); //todo: this may need to be a getInput general function?
         }
 
         return InputUtility.getNumber();
     }
 
+
     public static Project getProjectChoice(TimeSheet sheet) {
+        // Use get project key method to ensure user enters an int before proceeding.
         int answer = 0;
+        //String raw_answer = "";
+
+
         do {
             //displayProjects(sheet);  don't think we need this here as we might want to display menu again?
             // have to convert the answer to an int to compare
-            answer = Integer.parseInt(InputUtility.getString());//todo: If we're actually using this function, can't we just use the getNumber instead?
+            //raw_answer = InputUtility.getString();
+            //answer = Integer.parseInt(raw_answer);//todo: If we're actually using this function, can't we just use the getNumber instead?
+            answer = getProjectKey();
 
         } while (!sheet.getProjectMap().containsKey(answer));
 
