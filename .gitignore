@@ -127,3 +127,4 @@ hs_err_pid*
 timesheet_log.txt
 .idea/
 TimeTracker.iml
+/src/META-INF/
