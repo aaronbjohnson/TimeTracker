@@ -30,6 +30,10 @@ public class TimeSheet {
         return projectMap.size();
     }
 
+    /**
+     * This method is used to display the total of hours worked across all projects in a given Time Sheet.
+     * @return A double representing the total hours of all Projects' totalTime variable.
+     */
     public double getGrandTotal() {
         double total = 0.0;
         for (Map.Entry<Integer, Project> entry : projectMap.entrySet()) {

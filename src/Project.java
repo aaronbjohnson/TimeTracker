@@ -1,3 +1,8 @@
+/**
+ * The Project class stores information about a project, and keeps track of the total time spent working on a project.
+ *
+ * @author Aaron Johnson
+ */
 public class Project {
     private String name;
     private double totalTime;
