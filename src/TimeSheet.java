@@ -14,7 +14,7 @@ public class TimeSheet {
 
     public TimeSheet(double grandTotal) {
         this.grandTotal = grandTotal;
-        this.projects  = new ArrayList<Project>();
+        this.projects  = new ArrayList<>();
     }
 
     public void addProject(Project project) {
@@ -26,21 +26,9 @@ public class TimeSheet {
         projectMap.remove(key);
     }
 
-   /* public void addProject(Project newProject) {
-        projects.add(newProject);
-    }*/
-
     public int getNumberProjects() {
         return projectMap.size();
     }
-
-    /*public int getNumberProjects() {
-        if (!(projects == null)) {
-            return projects.size();
-        } else {
-            return 0;
-        }
-    }*/
 
     public double getGrandTotal() {
         double total = 0.0;

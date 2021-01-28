@@ -38,14 +38,8 @@ public class Main {
     // global constant for time sheet log file name
     private final static String OUTFILE_NAME = DESKTOP_PATH + "timesheet_log.txt";
 
-    // gc for editing a project
-    //private final static String CHANGE_NAME = "1";
-    //private final static String CHANGE_TIME = "2";
-    //private final static String RETURN_TO_PROJECT_MENU= "3";
-    //private final static String RETURN_TO_MAIN_MENU="4";
 
     public static void main(String[] args) throws IOException {
-
 
 
         // Create a time sheet
@@ -124,32 +118,6 @@ public class Main {
                                 case CHANGE_TIME:
                                     updateTime(userProject);
                                     break;
-                               /* case EDIT_PROJECT_CHOICE:
-                                    System.out.println("you chose to edit a project..");
-                                    boolean editingProject = true;
-                                    do {
-                                        String userEditChoice = getEditMenuChoice(userProject);
-
-                                        switch (userEditChoice) {
-                                            case CHANGE_NAME:
-                                                updateName(userProject);
-                                                break;
-                                            case CHANGE_TIME:
-                                                updateTime(userProject);
-                                                break;
-                                            case RETURN_TO_PROJECT_MENU:
-                                                editingProject = false;
-                                                break;
-                                            case RETURN_TO_MAIN_MENU:
-                                                editingProject = false;
-                                                projectOpen = false;
-                                                projectSelectionOpen = false;
-                                                break;
-                                        }
-
-
-                                    } while (editingProject);
-                                    break;*/
                                 case CHOOSE_ANOTHER_PROJECT:
                                     // set to false so we go back a level to choose another project
                                     projectOpen = false;
@@ -162,7 +130,6 @@ public class Main {
                             }
                         } while (projectOpen);
                     } while (projectSelectionOpen);
-
 
 
                     System.out.println();
@@ -189,28 +156,9 @@ public class Main {
                         e.printStackTrace();
                     }
 
-
                     // Add the new project to the timesheet instance
                     newSheet.addProject(mergeProjects(projectsToMerge, newProjectName, newSheet));
 
-                    // Then we need to delete the old projects that we merged
-
-
-
-
-                    //ArrayList<Integer> projectsSelection = getProjectSelections(input);
-
-                   /* System.out.println("\nthis thing...here's the entry:");
-                    System.out.println(projectsSelection);*/
-
-          /*          int[] toMerge = getProjectsToMerge(input);
-                    for (int k : toMerge
-                         ) {
-                        System.out.println(k);
-                    }
-
-                    String newProjectName = getNewName(input);
-                    mergeProjects(toMerge, newProjectName, newSheet);*/
                     break;
                 case VIEW_TIMESHEET:
                     //displayTimeSheet(newSheet);
@@ -236,9 +184,6 @@ public class Main {
                     break;
             }
         } while (programRunning);
-
-
-        //todo: here we can save the info to a file in case we accidentally quit. We can save daily logs this way too.
     }
 
     public static void createTimesheetFile(TimeSheet sheet) throws FileNotFoundException {
@@ -261,52 +206,8 @@ public class Main {
 
     }
 
-    /*public static ArrayList<Integer> getProjectSelections(Scanner console) {
-     *//*System.out.println("getProjectsSelections is being run...");
-        console.useDelimiter(" ");
-        String projects = "";
-        projects = console.nextLine();// todo: 1/5/2021. figure this out...
-
-        System.out.println("returning: " + projects);*//*
-        ArrayList<Integer> projects = new ArrayList<>();
-
-
-        Integer enteredProjects = console.nextInt();
-
-
-
-        *//*while (enteredProjects!=null) {
-            projects.add(console.nextInt());
-
-            if (enteredProjects.isEmpty()) {
-                return projects;
-            }
-        }*//*
-
-        return projects;
-    }*/
-
-
-    //todo: 1/5/2020 @ 12:57. Next thing to do is maybe implement what is in the coderanch forum: Make a separate Inputs utility class.
     public static String getNewName() throws IOException {
         System.out.print("\nEnter a name for the merged project: ");
-        //String name = "";
-
-        /*try (
-                Scanner input = new Scanner(System.in)
-        ) {
-            while (input.hasNext()) {
-                name = input.next();
-            }
-        }*/
-        /*while (InputUtility.hasAnotherString()) {
-            String name = InputUtility.getString();
-            String parse = name.substring(0, name.lastIndexOf(":"));
-            System.out.println("parse is now: ");
-            System.out.println(parse);
-        }*/
-        //String name = InputUtility.userInput.next();
-
 
         return InputUtility.input.readLine();
     }
@@ -376,19 +277,6 @@ public class Main {
         System.out.println("The project's name has been changed.");
     }
 
-/*    public static String getEditMenuChoice( Project project) {
-        String answer;
-        do {
-            displayEditMenu(project);
-            answer = InputUtility.getString();
-        } while (!answer.equals(CHANGE_NAME) &&
-                !answer.equals(CHANGE_TIME) &&
-                !answer.equals(RETURN_TO_PROJECT_MENU) &&
-                !answer.equals(RETURN_TO_MAIN_MENU));
-
-        return answer;
-    }*/
-
     public static void displayEditMenu(Project project) {
         System.out.println("Project: " + project.getName());
         System.out.println("Hours: " + project.getTotalTime() + "\n");
@@ -404,7 +292,6 @@ public class Main {
         // Update the project's time
         project.setTotalTime(updatedTime);
     }
-
 
     public static double getInterval(long start, long end) {
         // todo: create global constants for all the literals below
@@ -437,7 +324,6 @@ public class Main {
 
         return System.currentTimeMillis();
     }
-
 
 
     public static String getProjectActionChoice(Project project) {
@@ -482,10 +368,6 @@ public class Main {
 
 
         do {
-            //displayProjects(sheet);  don't think we need this here as we might want to display menu again?
-            // have to convert the answer to an int to compare
-            //raw_answer = InputUtility.getString();
-            //answer = Integer.parseInt(raw_answer);//todo: If we're actually using this function, can't we just use the getNumber instead?
             answer = getProjectKey();
 
         } while (!sheet.getProjectMap().containsKey(answer));
@@ -523,24 +405,14 @@ public class Main {
         return answer;
     }
 
-    public static void displayStatus(TimeSheet sheet) {
+/*    public static void displayStatus(TimeSheet sheet) {
         // This function will display the total number of projects and the grand total of time
         System.out.println();
         System.out.println("Number of projects so far: " + sheet.getNumberProjects());
         System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
         System.out.println();
-    }
-
-/*    public static void displayTimeSheet(TimeSheet sheet) {
-        System.out.println("Project\t\t\t\t| Total Hours");
-        System.out.println("--------------------------");
-
-        for (Map.Entry<Integer, Project> entry : sheet.getProjectMap().entrySet()) {
-            String name = entry.getValue().getName();
-            double time = entry.getValue().getTotalTime();
-            System.out.println(name + "\t\t\t\t| " + time);
-        }
     }*/
+
 
     public static StringBuilder assembleTimesheet(TimeSheet sheet) {
         StringBuilder content = new StringBuilder("Project\t\t\t| Total Hours\n---------------------------------------------\n");
@@ -561,8 +433,6 @@ public class Main {
     public static void displayWelcome(TimeSheet sheet) {
         System.out.println();
         System.out.println("Welcome.");
-        // call displayStatus here
-        //displayStatus(sheet);
         System.out.println("Number of projects so far: " + sheet.getNumberProjects());
         System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
 
