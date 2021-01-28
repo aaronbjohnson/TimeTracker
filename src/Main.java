@@ -31,7 +31,6 @@ public class Main {
     private final static String YES_OPTION = "y";
     private final static String NO_OPTION = "n";
 
-
     // Create constant for the path to the user's desktop where a saved log file is saved by default when requested
     private final static String DESKTOP_PATH = System.getProperty("user.home") + "/Desktop/";
 
@@ -44,9 +43,6 @@ public class Main {
 
         // Create a time sheet
         TimeSheet newSheet = new TimeSheet(0.0);
-
-        // Create a Scanner object to be used for program
-        //Scanner input = new Scanner(System.in);
 
         // Create a boolean to control main loop of program
         boolean programRunning = true;
@@ -166,8 +162,6 @@ public class Main {
 
                     System.out.println("\nWould you like to save this to a file? (y/n)");
                     System.out.println("WARNING: This will overwrite any previously saved log.");
-                    //todo: make method that save contents of timesheet to a file in same directory as program. @continue
-
 
                     String saveTimesheet = InputUtility.getNextInput();
 

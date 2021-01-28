@@ -7,7 +7,7 @@ public class TimeSheet {
     private static int id = 0;
 
 
-    private Map<Integer, Project> projectMap = new HashMap<Integer, Project>();
+    private Map<Integer, Project> projectMap = new HashMap<>();
 
     // todo: delete this I think
     private ArrayList<Project> projects;
