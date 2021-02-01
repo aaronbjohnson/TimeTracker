@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,11 +9,11 @@ public class TimeSheet {
     private Map<Integer, Project> projectMap = new HashMap<>();
 
     // todo: delete this I think
-    private ArrayList<Project> projects;
+    //private ArrayList<Project> projects;
 
     public TimeSheet(double grandTotal) {
         this.grandTotal = grandTotal;
-        this.projects  = new ArrayList<>();
+        //this.projects  = new ArrayList<>();
     }
 
     public void addProject(Project project) {
@@ -43,17 +42,13 @@ public class TimeSheet {
         return total;
     }
 
-    public void setGrandTotal(double grandTotal) {
-        this.grandTotal = grandTotal;
-    }
-
-    public ArrayList<Project> getProjects() {
+    /*public ArrayList<Project> getProjects() {
         return projects;
-    }
+    }*/
 
-    public void setProjects(ArrayList<Project> projects) {
+    /*public void setProjects(ArrayList<Project> projects) {
         this.projects = projects;
-    }
+    }*/
 
     public Map<Integer, Project> getProjectMap() {
         return projectMap;
