@@ -180,6 +180,12 @@ public class Main {
         } while (programRunning);
     }
 
+    /**
+     * This method is used to save a timesheet as a text file. The file's destination is specified in the global
+     * constants section above.
+     * @param sheet A TimeSheet containing the information the user wants to save to a text file.
+     * @throws FileNotFoundException If the file is not found.
+     */
     public static void createTimesheetFile(TimeSheet sheet) throws FileNotFoundException {
         PrintWriter output = new PrintWriter(OUTFILE_NAME);
         output.println(assembleTimesheet(sheet));
@@ -220,7 +226,8 @@ public class Main {
         return new Project(name, totalTime);
     }
 
-    public static int[] getProjectsToMerge(Scanner console) {
+    //todo: delete...
+/*    public static int[] getProjectsToMerge(Scanner console) {
         System.out.println("\nEnter the projects separated by space (1 3 5) and press Enter.");
 
         String enteredKeys = console.nextLine();
@@ -236,10 +243,10 @@ public class Main {
         System.out.println(Arrays.toString(tokens));
 
         return convertStringsToInts(tokens);
-    }
+    }*/
 
     // todo: may can delete now that using BufferReader
-    public static int[] convertStringsToInts(String[] separatedKeys) {
+/*    public static int[] convertStringsToInts(String[] separatedKeys) {
 
         int[] keys = new int[separatedKeys.length - 1];
 
@@ -247,7 +254,7 @@ public class Main {
             keys[i] = Integer.parseInt(separatedKeys[i]);
         }
         return keys;
-    }
+    }*/
 
     public static void updateTime(Project project) {
         System.out.println("Enter the new total time: ");
@@ -271,14 +278,14 @@ public class Main {
         System.out.println("The project's name has been changed.");
     }
 
-    public static void displayEditMenu(Project project) {
+/*    public static void displayEditMenu(Project project) {
         System.out.println("Project: " + project.getName());
         System.out.println("Hours: " + project.getTotalTime() + "\n");
         System.out.println("1) Rename");
         System.out.println("2) Change time");
         System.out.println("3) Return to project menu");
         System.out.println("4) Return to main menu");
-    }
+    }*/
 
     public static void updateProjectTime(Project project, double time) {
         // Get the project's current time and add new time
@@ -408,6 +415,13 @@ public class Main {
     }*/
 
 
+    /**
+     * This method is used to construct a simple table showing the projects for a given TimeSheet and the total logged
+     * time for each project. The table is made up of a StringBuilder object, which can either be displayed or used as
+     * the content for a log .txt file (see createTimesheetFile)
+     * @param sheet The TimeSheet that contains the projects to be displayed.
+     * @return A StringBuilder object containing the formatted projects and their logged hours.
+     */
     public static StringBuilder assembleTimesheet(TimeSheet sheet) {
         StringBuilder content = new StringBuilder("Project\t\t\t| Total Hours\n---------------------------------------------\n");
 
@@ -424,6 +438,10 @@ public class Main {
 
     }
 
+    /**
+     * Used to display the main root menu of the program.
+     * @param sheet A TimeSheet containing projects and their associated logged time.
+     */
     public static void displayWelcome(TimeSheet sheet) {
         System.out.println();
         System.out.println("Welcome.");
