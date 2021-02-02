@@ -278,15 +278,12 @@ public class Main {
         System.out.println("The project's name has been changed.");
     }
 
-/*    public static void displayEditMenu(Project project) {
-        System.out.println("Project: " + project.getName());
-        System.out.println("Hours: " + project.getTotalTime() + "\n");
-        System.out.println("1) Rename");
-        System.out.println("2) Change time");
-        System.out.println("3) Return to project menu");
-        System.out.println("4) Return to main menu");
-    }*/
 
+    /**
+     * 
+     * @param project
+     * @param time
+     */
     public static void updateProjectTime(Project project, double time) {
         // Get the project's current time and add new time
         double updatedTime = project.getTotalTime() + time;
@@ -294,6 +291,12 @@ public class Main {
         project.setTotalTime(updatedTime);
     }
 
+    /**
+     * This method determines the time interval between two given timestamps.
+     * @param start The long number representing the starting timestamp.
+     * @param end The long number representing the ending timestamp.
+     * @return A double representing the interval of time between the given start and end time stamps.
+     */
     public static double getInterval(long start, long end) {
         // todo: create global constants for all the literals below
         long diffInMilliseconds = end - start;
@@ -317,6 +320,10 @@ public class Main {
     }
 
 
+    /**
+     * This function will allow a user to stop the timer from running.
+     * @return A long representing the end time stamp.
+     */
     public static long getStopTime() {
         String answer;
         do {
