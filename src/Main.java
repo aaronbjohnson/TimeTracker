@@ -1,9 +1,7 @@
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Scanner;
 
 public class Main {
     private final static String MAIN_CREATE_ENTRY = "1";
@@ -15,7 +13,6 @@ public class Main {
 
     // project level global constants
     private final static String START_TIMER_CHOICE = "1";
-    //private final static String EDIT_PROJECT_CHOICE = "2";
     private final static String CHANGE_NAME = "2";
     private final static String CHANGE_TIME = "3";
     private final static String CHOOSE_ANOTHER_PROJECT = "4";
@@ -142,7 +139,7 @@ public class Main {
                     System.out.println("\nEnter the projects separated by space (1 3 5) and press Enter.");
                     displayProjects(newSheet);
 
-                    int[] projectsToMerge = inputGetter();
+                    int[] projectsToMerge = getMultipleSelection();
 
                     String newProjectName = "";
 
@@ -193,7 +190,14 @@ public class Main {
     }
 
 
-    public static int[] inputGetter() throws IOException {
+    /**
+     * This method allows the user to enter multiple number selections (separated by space). This entry is parsed and
+     * returned as array of ints. This is used to allow the user to select multiple projects to merge (see mergeProjects
+     * method below).
+     * @return An int[] representing Project IDs.
+     * @throws IOException if there is a problem with the user's entry.
+     */
+    public static int[] getMultipleSelection() throws IOException {
         String[] arr = InputUtility.getLine().split(" ");
 
         int[] intarr = new int[arr.length];
@@ -203,15 +207,29 @@ public class Main {
         }
 
         return intarr;
-
     }
-
+    
+    
+    /**
+     * This method prompts the user to enter a name for a new Project created from merging existing projects.
+     * @return A String that represents the new name for the Project.
+     * @throws IOException if there is a problem with the user's entry.
+     */
     public static String getNewName() throws IOException {
         System.out.print("\nEnter a name for the merged project: ");
 
         return InputUtility.input.readLine();
     }
 
+    /**
+     * This method is used to combine two or more Projects into one Project. The total time for each project to be 
+     * merged will be added together and be given as the total time for the new Project. The user will be asked to 
+     * provide a new name for the merged Project.
+     * @param projects An array of ints representing the project IDs of the Projects to be merged.
+     * @param name A String representing the name to be assigned to the new Project.
+     * @param sheet The TimeSheet where the Projects are stored.
+     * @return A new Project created from merging the passed-in Projects.
+     */
     public static Project mergeProjects(int[] projects, String name, TimeSheet sheet) {
         double totalTime = 0;
 
@@ -225,37 +243,12 @@ public class Main {
         // Create a new project with the new name and hours
         return new Project(name, totalTime);
     }
+    
 
-    //todo: delete...
-/*    public static int[] getProjectsToMerge(Scanner console) {
-        System.out.println("\nEnter the projects separated by space (1 3 5) and press Enter.");
-
-        String enteredKeys = console.nextLine();
-
-        System.out.println("\nthe entered keys are: ");
-        System.out.println(enteredKeys);
-
-        String[] tokens = enteredKeys.split(" ");
-
-        System.out.println("\nafter splitting, the array looks like: ");
-
-        //char[] separatedKeys = enteredKeys.toCharArray();
-        System.out.println(Arrays.toString(tokens));
-
-        return convertStringsToInts(tokens);
-    }*/
-
-    // todo: may can delete now that using BufferReader
-/*    public static int[] convertStringsToInts(String[] separatedKeys) {
-
-        int[] keys = new int[separatedKeys.length - 1];
-
-        for (int i = 0; i < separatedKeys.length - 1; i++) {
-            keys[i] = Integer.parseInt(separatedKeys[i]);
-        }
-        return keys;
-    }*/
-
+    /**
+     * This method allows the user to change the total time for a given project.
+     * @param project The Project that the user is currently operating within.
+     */
     public static void updateTime(Project project) {
         System.out.println("Enter the new total time: ");
 
@@ -269,6 +262,10 @@ public class Main {
         System.out.println("The project's time has been changed.");
     }
 
+    /**
+     * This method is used to change the name of a project.
+     * @param project The Project that the user is currently operating within.
+     */
     public static void updateName(Project project) {
         System.out.println("Enter new name: ");
         String newName = InputUtility.getString();
@@ -280,9 +277,9 @@ public class Main {
 
 
     /**
-     * 
-     * @param project
-     * @param time
+     * This method is used to update a Project's total number of hours when a new time period has been saved.
+     * @param project The Project that the user is currently operating within.
+     * @param time The double representing the number of hours to assign to the project.
      */
     public static void updateProjectTime(Project project, double time) {
         // Get the project's current time and add new time
@@ -301,7 +298,8 @@ public class Main {
         // todo: create global constants for all the literals below
         long diffInMilliseconds = end - start;
         long diffInSeconds = diffInMilliseconds / 1000;
-        int seconds = (int) (diffInSeconds % 60);
+        //todo: delete below if it doesn't break anything
+        //int seconds = (int) (diffInSeconds % 60);
         diffInSeconds /= 60;
         int minutes = (int) (diffInSeconds % 60);
         diffInSeconds /= 60;
