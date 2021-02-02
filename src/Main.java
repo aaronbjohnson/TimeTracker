@@ -327,6 +327,12 @@ public class Main {
     }
 
 
+    /**
+     * This method is used to get the user's choice for the project menu. This method calls the displayProjectInfo,
+     * which displays the menu of choices.
+     * @param project The Project that the user is currently operating within.
+     * @return A String representing the user's menu choice.
+     */
     public static String getProjectActionChoice(Project project) {
         String answer;
         do {
@@ -341,6 +347,10 @@ public class Main {
         return answer;
     }
 
+    /**
+     * This method displays the operations a user can perform within a given Project.
+     * @param project The Project that the user is performing operations on.
+     */
     public static void displayProjectInfo(Project project) {
         System.out.println("Project: " + project.getName());
         System.out.println("Hours: " + project.getTotalTime() + "\n");
@@ -351,22 +361,30 @@ public class Main {
         System.out.println("5) Return to main menu");
     }
 
+    /**
+     * This method is used to get a valid project key from the user. This method is used to match the user's choice to
+     * the actual ID of a project. This method ensures the user enters an int.
+     * @return An int representing the user's choice AND the desired project's ID.
+     */
     public static int getProjectKey( ) {
 
         while (!InputUtility.hasAnotherInt()) {
             System.out.println("\nPlease enter a valid number option.\n");
-            InputUtility.getNextInput(); //todo: this may need to be a getInput general function?
+            InputUtility.getNextInput();
         }
 
         return InputUtility.getNumber();
     }
 
 
+    /**
+     * This method is used to get the user's choice for which project they'd like to select given a list of projects.
+     * @param sheet The TimeSheet being used for the current session.
+     * @return A Project that matches the user's selection.
+     */
     public static Project getProjectChoice(TimeSheet sheet) {
         // Use get project key method to ensure user enters an int before proceeding.
-        int answer = 0;
-        //String raw_answer = "";
-
+        int answer;
 
         do {
             answer = getProjectKey();
@@ -376,6 +394,10 @@ public class Main {
         return sheet.getProjectMap().get(answer);
     }
 
+    /**
+     * This method is used to display a list of all projects stored withing a given TimeSheet.
+     * @param sheet The TimeSheet being used for the current session.
+     */
     public static void displayProjects(TimeSheet sheet) {
         System.out.println();
         sheet.getProjectMap().forEach((k, v) -> {
@@ -384,6 +406,10 @@ public class Main {
         });
     }
 
+    /**
+     * This method is used to create a new Project with a user-provided name.
+     * @return A Project created with the name provided by the user.
+     */
     public static Project createProject() {
         System.out.print("Enter the project name: ");
         String projectName = InputUtility.getString();
@@ -391,6 +417,12 @@ public class Main {
         return new Project(projectName);
     }
 
+    /**
+     * This method is used to get the user's choice for the main menu. This method calls the displayWelcome -- which
+     * displays the menu of choices.
+     * @param sheet The TimeSheet being used for the current session.
+     * @return A String representing the user's menu choice.
+     */
     public static String getMainChoice(TimeSheet sheet) {
         String answer;
         do {
@@ -405,14 +437,6 @@ public class Main {
 
         return answer;
     }
-
-/*    public static void displayStatus(TimeSheet sheet) {
-        // This function will display the total number of projects and the grand total of time
-        System.out.println();
-        System.out.println("Number of projects so far: " + sheet.getNumberProjects());
-        System.out.println("Number of hours logged so far: " + sheet.getGrandTotal());
-        System.out.println();
-    }*/
 
 
     /**
