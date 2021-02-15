@@ -203,13 +203,13 @@ public class Main {
     public static int[] getMultipleSelection() throws IOException {
         String[] arr = InputUtility.getLine().split(" ");
 
-        int[] intarr = new int[arr.length];
+        int[] intArray = new int[arr.length];
 
         for (int i = 0; i < arr.length; i++) {
-            intarr[i] = Integer.parseInt(arr[i]);
+            intArray[i] = Integer.parseInt(arr[i]);
         }
 
-        return intarr;
+        return intArray;
     }
     
     
