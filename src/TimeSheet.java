@@ -3,28 +3,37 @@ import java.util.Map;
 
 public class TimeSheet {
     private double grandTotal;
-    private static int id = 0;
+    private int id = 0;
 
 
     private Map<Integer, Project> projectMap = new HashMap<>();
 
-    // todo: delete this I think
-    //private ArrayList<Project> projects;
-
     public TimeSheet(double grandTotal) {
         this.grandTotal = grandTotal;
-        //this.projects  = new ArrayList<>();
     }
 
+    /**
+     * This method adds a new project the to TimeSheet. The id accumulator is first increased so that the project gets
+     * the proper id assignment.
+     * @param project A Project to be added to the TimeSheet.
+     */
     public void addProject(Project project) {
         id++;
         projectMap.put(id, project);
     }
 
+    /**
+     * This method deletes a project from the TimeSheet
+     * @param key An int representing the id of the project to be deleted.
+     */
     public void deleteProject(int key) {
         projectMap.remove(key);
     }
 
+    /**
+     * This method shows how many projects have been stored in the TimeSheet
+     * @return An int representing the number of projects in a TimeSheet.
+     */
     public int getNumberProjects() {
         return projectMap.size();
     }
@@ -42,14 +51,11 @@ public class TimeSheet {
         return total;
     }
 
-    /*public ArrayList<Project> getProjects() {
-        return projects;
-    }*/
 
-    /*public void setProjects(ArrayList<Project> projects) {
-        this.projects = projects;
-    }*/
-
+    /**
+     * This method returns a reference to the Map of stored Projects in projectMap.
+     * @return A Map of Projects along with their id's.
+     */
     public Map<Integer, Project> getProjectMap() {
         return projectMap;
     }
