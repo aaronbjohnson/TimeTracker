@@ -21,8 +21,11 @@ public class Main {
     // global constant for ending a timer
     private final static String END_TIMER = "end";
 
-    // global constant for number of minutes in an hour
+    // global constants for time
     private final static double MINUTES_IN_HOUR = 60.0;
+    private final static double MILLIS_IN_SECOND = 1000.0;
+    private final static int MINUTES_AND_SECONDS = 60;
+    private final static int HOURS = 24;
 
     // global constant for yes options
     private final static String YES_OPTION = "y";
@@ -75,7 +78,6 @@ public class Main {
                             switch (projectActionChoice) {
                                 case START_TIMER_CHOICE:
                                     System.out.println("you chose to start a timer...");
-                                    //todo: make functionality to stop/start timer
                                     long start = System.currentTimeMillis();
                                     // Display info to the user that the timer has started
                                     System.out.println("The timer is running...");
@@ -295,15 +297,12 @@ public class Main {
      * @return A double representing the interval of time between the given start and end time stamps.
      */
     public static double getInterval(long start, long end) {
-        // todo: create global constants for all the literals below
         long diffInMilliseconds = end - start;
-        long diffInSeconds = diffInMilliseconds / 1000;
-        //todo: delete below if it doesn't break anything
-        //int seconds = (int) (diffInSeconds % 60);
-        diffInSeconds /= 60;
-        int minutes = (int) (diffInSeconds % 60);
-        diffInSeconds /= 60;
-        int hours = (int) (diffInSeconds % 24);
+        double diffInSeconds = diffInMilliseconds / MILLIS_IN_SECOND;
+        diffInSeconds /= MINUTES_AND_SECONDS;
+        int minutes = (int) (diffInSeconds % MINUTES_AND_SECONDS);
+        diffInSeconds /= MINUTES_AND_SECONDS;
+        int hours = (int) (diffInSeconds % HOURS);
 
         // Convert minutes to decimal by dividing by 60
         double rawTime = hours + (minutes / MINUTES_IN_HOUR);
