@@ -4,38 +4,38 @@ import java.math.RoundingMode;
 import java.util.Map;
 
 public class Main {
-    private final static String MAIN_CREATE_ENTRY = "1";
-    private final static String MAIN_ENTER_WORKSPACE = "2";
-    private final static String DELETE_PROJECT = "3";
-    private final static String MERGE_PROJECTS = "4";
-    private final static String VIEW_TIMESHEET = "5";
-    private final static String MAIN_QUIT = "6";
+    private static final String MAIN_CREATE_ENTRY = "1";
+    private static final String MAIN_ENTER_WORKSPACE = "2";
+    private static final String DELETE_PROJECT = "3";
+    private static final String MERGE_PROJECTS = "4";
+    private static final String VIEW_TIMESHEET = "5";
+    private static final String MAIN_QUIT = "6";
 
     // project level global constants
-    private final static String START_TIMER_CHOICE = "1";
-    private final static String CHANGE_NAME = "2";
-    private final static String CHANGE_TIME = "3";
-    private final static String CHOOSE_ANOTHER_PROJECT = "4";
-    private final static String MAIN_MENU_RETURN_CHOICE = "5";
+    private static final String START_TIMER_CHOICE = "1";
+    private static final String CHANGE_NAME = "2";
+    private static final String CHANGE_TIME = "3";
+    private static final String CHOOSE_ANOTHER_PROJECT = "4";
+    private static final String MAIN_MENU_RETURN_CHOICE = "5";
 
     // global constant for ending a timer
-    private final static String END_TIMER = "end";
+    private static final String END_TIMER = "end";
 
     // global constants for time
-    private final static double MINUTES_IN_HOUR = 60.0;
-    private final static double MILLIS_IN_SECOND = 1000.0;
-    private final static int MINUTES_AND_SECONDS = 60;
-    private final static int HOURS = 24;
+    private static final double MINUTES_IN_HOUR = 60.0;
+    private static final double MILLIS_IN_SECOND = 1000.0;
+    private static final int MINUTES_AND_SECONDS = 60;
+    private static final int HOURS = 24;
 
     // global constant for yes options
-    private final static String YES_OPTION = "y";
-    private final static String NO_OPTION = "n";
+    private static final String YES_OPTION = "y";
+    private static final String NO_OPTION = "n";
 
     // Create constant for the path to the user's desktop where a saved log file is saved by default when requested
-    private final static String DESKTOP_PATH = System.getProperty("user.home") + "/Desktop/";
+    private static final String DESKTOP_PATH = System.getProperty("user.home") + "/Desktop/";
 
     // global constant for time sheet log file name
-    private final static String OUTFILE_NAME = DESKTOP_PATH + "timesheet_log.txt";
+    private static final String OUTFILE_NAME = DESKTOP_PATH + "timesheet_log.txt";
 
 
     public static void main(String[] args) throws IOException {
@@ -77,7 +77,6 @@ public class Main {
 
                             switch (projectActionChoice) {
                                 case START_TIMER_CHOICE:
-                                    System.out.println("you chose to start a timer...");
                                     long start = System.currentTimeMillis();
                                     // Display info to the user that the timer has started
                                     System.out.println("The timer is running...");
@@ -95,14 +94,14 @@ public class Main {
                                         System.out.println("Do you want to add this time to the project? (y/n)");
                                         String commitTimeChoice = InputUtility.getLine();
 
-                                        if (commitTimeChoice.toLowerCase().equals(YES_OPTION)) {
+                                        if (commitTimeChoice.equalsIgnoreCase(YES_OPTION)) {
                                             // commit the time to the project
                                             updateProjectTime(userProject, interval);
 
                                             // get out of the loop
                                             commitTime = false;
 
-                                        } else if (commitTimeChoice.toLowerCase().equals(NO_OPTION)) {
+                                        } else if (commitTimeChoice.equalsIgnoreCase(NO_OPTION)) {
                                             commitTime = false;
                                         }
                                     } while (commitTime);
@@ -122,6 +121,8 @@ public class Main {
                                     projectOpen = false;
                                     projectSelectionOpen = false;
                                     break;
+                                default:
+                                    throw new IllegalStateException("Unexpected value: " + projectActionChoice);
                             }
                         } while (projectOpen);
                     } while (projectSelectionOpen);
@@ -156,7 +157,6 @@ public class Main {
 
                     break;
                 case VIEW_TIMESHEET:
-                    //displayTimeSheet(newSheet);
                     System.out.println(assembleTimesheet(newSheet));
 
                     System.out.println("\nWould you like to save this to a file? (y/n)");
@@ -164,17 +164,18 @@ public class Main {
 
                     String saveTimesheet = InputUtility.getNextInput();
 
-                    if (saveTimesheet.toLowerCase().equals(YES_OPTION)) {
-                        // save the timesheet output to a text file
+                    if (saveTimesheet.equalsIgnoreCase(YES_OPTION)) {
+                        // Save the timesheet output to a text file
                         createTimesheetFile(newSheet);
                     }
-
 
                     break;
                 case MAIN_QUIT:
                     System.out.println("Bye");
                     programRunning = false;
                     break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + mainMenuChoice);
             }
         } while (programRunning);
     }
@@ -308,7 +309,7 @@ public class Main {
         double rawTime = hours + (minutes / MINUTES_IN_HOUR);
 
         // Make a BigDecimal version of the raw time
-        BigDecimal finalTime = new BigDecimal(rawTime);
+        BigDecimal finalTime = BigDecimal.valueOf(rawTime);
 
         // Round to the nearest 10th
         finalTime = finalTime.setScale(1, RoundingMode.UP);
@@ -325,7 +326,7 @@ public class Main {
         String answer;
         do {
             answer = InputUtility.getString();
-        } while (!answer.toLowerCase().equals(END_TIMER));
+        } while (!answer.equalsIgnoreCase(END_TIMER));
 
         return System.currentTimeMillis();
     }
